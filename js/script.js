@@ -1,25 +1,40 @@
 'use strict'
+document.addEventListener('DOMContentLoaded', () => {
+    const tabHeaders = document.querySelectorAll('.tabheader__item');
+    const tabHeadersParent = document.querySelector('.tabheader__items');
+    const tabContents = document.querySelectorAll('.tabcontent');
 
-const tabHeaders = document.querySelectorAll('.tabheader__item');
-const tabHeadersParent = document.querySelector('.tabheader__items');
-const tabContents = document.querySelectorAll('.tabcontent');
 
-hideTabContent();
-showTabContent();
 
-function hideTabContent () {
-    tabContents.forEach(item => {
-        item.style.display = 'none'
-    })
+    function hideTabContent () {
+        tabContents.forEach(item => {
+            item.classList.add('hide')
+            item.classList.remove('show')
+        })
 
-    tabHeaders.forEach(item => {
-        item.classList.remove('tabheader__item_active')
-    })
-}
+        tabHeaders.forEach(item => {
+            item.classList.remove('tabheader__item_active')
+        })
+    }
 
-function showTabContent (i = 0) {
+    function showTabContent (i = 0) {
         tabHeaders[i].classList.add('tabheader__item_active')
-        tabContents[i].style.display = 'block'
-    
+        tabContents[i].classList.add('show')
+        tabContents[i].classList.remove('hide')
 
-}
+    }
+
+    hideTabContent();
+    showTabContent();
+
+    tabHeadersParent.addEventListener('click', (e) => {
+        if (e.target && e.target.matches('.tabheader__item')) {
+            tabHeaders.forEach((item, index) => {
+                if (e.target == item) {
+                    hideTabContent();
+                    showTabContent(index);
+                }
+            })
+        }
+    })
+})
